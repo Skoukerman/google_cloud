@@ -1,0 +1,24 @@
+# Use the official Node.js image with a specific version tag
+FROM node:18.18.0
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install TypeScript and ts-node globally
+# Check if Yarn is installed; if not, install it
+RUN if ! command -v yarn >/dev/null 2>&1; then npm install -g yarn; fi
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install all dependencies
+RUN yarn install
+
+
+# Copy all files from the project’s root to the working directory
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Command to run the application
+CMD ["yarn", "start"]
